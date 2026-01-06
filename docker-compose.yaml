@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  srs:
+    image: registry.cn-hangzhou.aliyuncs.com/ossrs/srs:6
+    container_name: srs
+    restart: unless-stopped
+
+    environment:
+      - CANDIDATE=10.160.240.67
+
+    ports:
+      - "1935:1935"          # RTMP
+      - "8080:8080"          # HTTP-FLV / 页面
+      - "8088:8088"          # HTTPS 页面
+      - "1985:1985"          # HTTP API
+      - "1990:1990"          # HTTPS API（WHIP / WHEP）
+      - "8000:8000/udp"      # WebRTC UDP（必须）
+
+    volumes:
+      - ./conf/https.rtmp2rtc.conf:/usr/local/srs/conf/https.rtmp2rtc.conf
+      - ./logs:/usr/local/srs/objs/logs
+
+    command: >
+      ./objs/srs
+      -c /usr/local/srs/conf/https.rtmp2rtc.conf

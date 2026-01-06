@@ -1,0 +1,13 @@
+./ffmpeg \
+  -re -i ./美丽中国宣传片视频.mp4 \
+  -fflags +genpts \
+  -vsync cfr \
+  -r 25 \
+  -c:v libx264 \
+  -profile:v baseline \
+  -preset veryfast \
+  -tune zerolatency \
+  -x264-params "bframes=0:keyint=25:min-keyint=25:scenecut=0" \
+  -g 25 \
+  -c:a aac -ar 48000 -ac 2 \
+  -f flv rtmp://10.160.240.67/live/livestream
